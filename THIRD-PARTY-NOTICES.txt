@@ -1,0 +1,53 @@
+Expert Mouse Pro 2026 - third-party notices
+
+The app's original source code and blue M artwork are licensed under MIT.
+See LICENSE (APP-LICENSE.txt in the installed application).
+
+Microsoft .NET and Windows Desktop runtime
+------------------------------------------
+The Windows installer contains an unmodified, self-contained Microsoft .NET
+runtime. Its own license and third-party notices are retained in the published
+application directory. Microsoft .NET is principally MIT-licensed, with
+component-specific notices.
+Source and notices: https://github.com/dotnet/runtime
+Windows Desktop source: https://github.com/dotnet/wpf
+Windows Forms source: https://github.com/dotnet/winforms
+
+USBPcap 1.5.4.0
+--------------
+USBPcap is an independent third-party USB capture driver by Tomasz Mon and
+contributors. Its driver is GPL-2.0; USBPcapCMD has a BSD-2-Clause license.
+The app uses USBPcap's documented capture interface. It does not contain a
+copy of USBPcap's driver implementation.
+
+USBPcap binaries are NOT included in this app's installer or source archive.
+If the driver is missing, setup offers a consent-based download of the
+unchanged official installer, verified against a pinned SHA-256 digest.
+USBPcap retains its own licenses and is not relicensed under this app's MIT
+license. Uninstalling this app does not uninstall USBPcap.
+
+Official project: https://desowin.org/usbpcap/
+Release: https://github.com/desowin/usbpcap/releases/tag/1.5.4.0
+Matching source:
+https://github.com/desowin/usbpcap/releases/download/1.5.4.0/usbpcap-src-incl-pdb-1.5.4.0.7z
+Driver license:
+https://github.com/desowin/usbpcap/blob/1.5.4.0/nsis/gpl-2.0.txt
+Command-line tool license:
+https://github.com/desowin/usbpcap/blob/1.5.4.0/nsis/bsd-2clause.txt
+
+Inno Setup
+----------
+The installer is generated with Inno Setup, by Jordan Russell and Martijn Laan.
+Its original copyright notices and installer/uninstaller resources are
+retained. The compiler is a build dependency, not vendored app source.
+Project: https://jrsoftware.org/isinfo.php
+License: https://jrsoftware.org/files/is/license.txt
+
+Windows and Kensington
+----------------------
+Windows fonts and system libraries are referenced from the user's operating
+system, not redistributed as font assets.
+Kensington and Expert Mouse are trademarks of their respective owners.
+This is an independent community project, not affiliated with or endorsed by
+Kensington. Proprietary Kensington MouseWorks installers, drivers, and other
+vendor files are not part of the open-source repository or release assets.

@@ -1,0 +1,28 @@
+Expert Mouse Pro 2026 - experimental community release
+
+Supported target: Kensington Expert Mouse Pro USB VID_047D / PID_1002.
+Platform: Windows 11 x64, using an administrator account.
+
+This setup includes the .NET Desktop runtime. No .NET SDK or separate runtime
+download is needed.
+
+The six DirectLaunch buttons require USBPcap. If it is missing, setup will ask
+permission before downloading the official signed USBPcap 1.5.4.0 installer.
+The download is checked against a pinned SHA-256. Installing a USB hub filter
+requires administrator access and a reboot. USBPcap retains its own licenses.
+
+USBPcap officially lists Windows 7/8/10, not Windows 11. This app has been
+tested on one Windows 11 PC, not certified for every Windows configuration.
+If Windows rejects the driver, do not disable Windows security protections.
+
+Exit X-Mouse Button Control while using this remapper. You do not need to
+uninstall it.
+
+Main-button and wheel remapping pauses if another mouse/touchpad is present.
+The app deliberately pauses mappings while its settings window is visible.
+
+Uninstall removes this app and its installation-specific startup entries.
+Your personal settings are preserved. The shared USBPcap driver is left in
+place because other applications may depend on it.
+
+This project is independent of Kensington and is provided without warranty.

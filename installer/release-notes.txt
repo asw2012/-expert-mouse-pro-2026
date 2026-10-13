@@ -1,0 +1,24 @@
+Expert Mouse Pro 2026 - first experimental Windows 11 x64 release
+
+Download the Setup EXE below and double-click it to install.
+The .NET Desktop runtime is included.
+USBPcap, if missing, is downloaded from its official release only after consent.
+A driver installation requires administrator access and a reboot.
+
+Features:
+- Four main buttons, middle/wheel click, wheel scrolling and six DirectLaunch buttons.
+- Mouse actions, keyboard shortcuts and application assignments.
+- Blue M tray icon, dark theme, saved mappings and optional Start with Windows.
+- Pause, reconnect, and safe input-testing window.
+
+Important:
+- Supported device is USB 047D:1002; other Expert Mouse models are not verified.
+- This is an experimental, independent community project, not Kensington software.
+- USBPcap compatibility with every Windows 11/Secure Boot/HVCI configuration is not certified.
+- Never disable Windows security protections to install the driver.
+- Keep X-Mouse stopped while using the app.
+- Main/wheel remapping requires the trackball to be the sole pointer.
+- This unsigned community installer may show an unknown-publisher warning.
+- SHA256SUMS.txt lists the installer and original-source archive hashes.
+
+Source is MIT-licensed. See THIRD-PARTY-NOTICES.txt for separate component licenses.

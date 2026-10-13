@@ -1,0 +1,16 @@
+**/bin/
+**/obj/
+ExpertMouse/captures/
+ExpertMouse/app/
+/MouseWorks_5_61/
+/MouseWorks_PC_622.exe
+/dist/
+/installer/cache/
+/.vs/
+*.user
+*.suo
+*.log
+*.pcap
+*.pcapng
+*.pfx
+*.p12

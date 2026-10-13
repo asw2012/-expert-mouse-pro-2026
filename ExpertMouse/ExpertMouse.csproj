@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PlatformTarget>x64</PlatformTarget>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <Title>Expert Mouse Pro 2026</Title>
+    <AssemblyTitle>Expert Mouse Pro 2026</AssemblyTitle>
+    <Product>Expert Mouse Pro 2026</Product>
+    <Description>Windows 11 tray remapper for the Kensington Expert Mouse Pro.</Description>
+    <ApplicationIcon Condition="Exists('Assets\App.ico')">Assets\App.ico</ApplicationIcon>
+  </PropertyGroup>
+</Project>
