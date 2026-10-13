@@ -98,6 +98,7 @@ begin
   else
     DriverSummary.Caption := 'Setup can download the unchanged official USBPcap 1.5.4.0 installer from GitHub.' + #13#10#13#10 +
       'The download is verified against a pinned SHA-256. The driver installs USB hub filters and requires a reboot.' + #13#10#13#10 +
+      'The official USBPcap installer will open separately. Review and accept its driver and USBPcapCMD license screens there to continue.' + #13#10#13#10 +
       'Windows 11 compatibility is experimental. If Windows rejects the driver, do not disable Secure Boot, Memory Integrity, or signature enforcement.' + #13#10#13#10 +
       'Project and licenses: https://desowin.org/usbpcap/';
   DriverConsent := TNewCheckBox.Create(DriverPage);
@@ -152,11 +153,11 @@ begin
     finally
       DownloadPage.Hide;
     end;
-    if not Exec(ExpandConstant('{tmp}\USBPcapSetup-1.5.4.0.exe'), '/S', '',
-      SW_HIDE, ewWaitUntilTerminated, ExitCode) then
+    if not Exec(ExpandConstant('{tmp}\USBPcapSetup-1.5.4.0.exe'), '', '',
+      SW_SHOWNORMAL, ewWaitUntilTerminated, ExitCode) then
       RaiseException('The official USBPcap installer could not be started.');
     if ExitCode <> 0 then
-      RaiseException(Format('The official USBPcap installer returned error %d.', [ExitCode]));
+      RaiseException(Format('The official USBPcap installer did not complete successfully (exit code %d). Review its license prompts, then retry, or cancel setup.', [ExitCode]));
     if not DriverInstalled then
       RaiseException('USBPcap did not register its service and driver. Setup will not report success.');
     DriverAdded := True;

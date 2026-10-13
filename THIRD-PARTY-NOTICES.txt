@@ -22,7 +22,9 @@ copy of USBPcap's driver implementation.
 
 USBPcap binaries are NOT included in this app's installer or source archive.
 If the driver is missing, setup offers a consent-based download of the
-unchanged official installer, verified against a pinned SHA-256 digest.
+unchanged official installer, verified against a pinned SHA-256 digest, and
+launches it visibly so users can review and accept USBPcap's own license
+screens. The setup does not silently accept or bypass those licenses.
 USBPcap retains its own licenses and is not relicensed under this app's MIT
 license. Uninstalling this app does not uninstall USBPcap.
 

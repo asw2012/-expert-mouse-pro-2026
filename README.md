@@ -17,7 +17,10 @@ if you only want to install and use the app.
 1. Double-click Setup and approve Windows' administrator prompt.
 2. Review the installation information and choose an installation folder.
 3. If USBPcap is missing, setup offers to download its official installer.
-   **No driver download or installation happens without consent.**
+   **No driver download or installation happens without consent.** The verified
+   official installer then opens visibly so you can review and separately
+   accept its driver and USBPcapCMD license screens. Declining or canceling it
+   stops setup.
 4. Finish setup. If a driver was installed, restart Windows before using
    remapping.
 5. Open **Expert Mouse Pro 2026** from the Start menu.
@@ -46,8 +49,10 @@ does **not** disable Secure Boot, Memory Integrity, or signature enforcement.
 If Windows rejects the driver, stop rather than weakening those protections.
 
 Setup verifies the USBPcap download against a pinned SHA-256 digest of the
-official, Authenticode-verified release. The driver keeps its own licenses.
-USBPcap binaries are not embedded in this project's installer or source tree.
+official, Authenticode-verified release, then launches the original installer
+interactively; its license acceptance is not skipped or automated. The driver
+keeps its own licenses. USBPcap binaries are not embedded in this project's
+installer or source tree.
 
 Until the app/installer is signed with a trusted code-signing certificate,
 Windows may show an unknown-publisher or SmartScreen warning. GitHub hosting

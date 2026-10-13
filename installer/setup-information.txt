@@ -8,7 +8,10 @@ download is needed.
 
 The six DirectLaunch buttons require USBPcap. If it is missing, setup will ask
 permission before downloading the official signed USBPcap 1.5.4.0 installer.
-The download is checked against a pinned SHA-256. Installing a USB hub filter
+The download is checked against a pinned SHA-256. The official USBPcap installer
+then opens visibly and presents its own license screens for the driver and
+USBPcapCMD utility. Review and accept those licenses in that installer to
+continue; declining or canceling it stops setup. Installing a USB hub filter
 requires administrator access and a reboot. USBPcap retains its own licenses.
 
 USBPcap officially lists Windows 7/8/10, not Windows 11. This app has been

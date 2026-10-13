@@ -21,6 +21,13 @@ if (-not $runtime.runtimeOptions.includedFrameworks -or $runtime.runtimeOptions.
 }
 $metadata = (Get-Item -LiteralPath (Join-Path $publish 'ExpertMouse.exe')).VersionInfo
 if ($metadata.ProductName -ne 'Expert Mouse Pro 2026') { throw 'Published product name is incorrect.' }
+$installerSource = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'ExpertMousePro2026.iss') -Raw
+if ($installerSource -match "(?is)USBPcapSetup-1\.5\.4\.0\.exe'\)\s*,\s*'/S'") {
+    throw 'USBPcap license prompts must not be bypassed with silent setup.'
+}
+if ($installerSource -notmatch "(?is)USBPcapSetup-1\.5\.4\.0\.exe'\)\s*,\s*''\s*,\s*''\s*,\s*SW_SHOWNORMAL") {
+    throw 'USBPcap original installer must be launched visibly and interactively.'
+}
 if (-not (Test-Path -LiteralPath (Join-Path $dist ("ExpertMousePro2026-Setup-" + $Version + '-win-x64.exe')))) {
     throw 'Setup EXE is missing.'
 }

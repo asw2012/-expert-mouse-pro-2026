@@ -3,6 +3,8 @@ Expert Mouse Pro 2026 - first experimental Windows 11 x64 release
 Download the Setup EXE below and double-click it to install.
 The .NET Desktop runtime is included.
 USBPcap, if missing, is downloaded from its official release only after consent.
+Its original installer then opens visibly so you can review and accept its
+driver and USBPcapCMD license screens; setup does not bypass those prompts.
 A driver installation requires administrator access and a reboot.
 
 Features:
