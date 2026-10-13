@@ -1,5 +1,7 @@
 # Expert Mouse Pro 2026
 
+[Download the latest Windows installer](https://github.com/asw2012/-expert-mouse-pro-2026/releases/latest)
+
 A community Windows 11 tray remapper for the **Kensington Expert Mouse Pro**
 with four main buttons, a wheel click, and six DirectLaunch buttons.
 
