@@ -15,8 +15,10 @@ internal sealed record ConnectedDevice(nint Handle, DeviceDescription Descriptio
 
 internal static class DeviceSurvey
 {
-    internal static bool IsTarget(string path) =>
-        path.Contains("VID_047D&PID_1002", StringComparison.OrdinalIgnoreCase);
+    internal delegate uint DeviceInfoReader(nint device, uint command, nint data, ref uint size);
+
+    internal static bool IsTarget(string? path) =>
+        path?.Contains("VID_047D&PID_1002", StringComparison.OrdinalIgnoreCase) == true;
 
     internal static List<ConnectedDevice> Find()
     {
@@ -24,7 +26,7 @@ internal static class DeviceSurvey
         foreach (var device in Enumerate())
         {
             var path = GetName(device.Handle);
-            if (!IsTarget(path))
+            if (path is null || !IsTarget(path))
                 continue;
             using var handle = Native.CreateFile(path, 0, 3, 0, 3, 0, 0);
             if (handle.IsInvalid)
@@ -54,10 +56,10 @@ internal static class DeviceSurvey
         return result;
     }
 
-    internal static string[] MousePaths() =>
+    internal static string?[] MousePaths() =>
         Enumerate().Where(d => d.Type == 0).Select(d => GetName(d.Handle)).ToArray();
 
-    internal static bool IsSoleExpertMouse(IReadOnlyList<string> paths) =>
+    internal static bool IsSoleExpertMouse(IReadOnlyList<string?> paths) =>
         paths.Count == 1 && IsTarget(paths[0]);
 
     private static Native.DeviceList[] Enumerate()
@@ -93,16 +95,25 @@ internal static class DeviceSurvey
         }
     }
 
-    private static string GetName(nint handle)
+    internal static string? GetName(nint handle, DeviceInfoReader? readInfo = null)
     {
+        readInfo ??= Native.GetRawInputDeviceInfo;
         uint chars = 0;
-        Check(Native.GetRawInputDeviceInfo(handle, Native.DeviceName, 0, ref chars), "Size device name");
+        Check(readInfo(handle, Native.DeviceName, 0, ref chars), "Size device name");
+        if (chars == 0)
+            throw new InvalidOperationException("Input device returned an invalid name size.");
+        // Some virtual devices report only the terminator, then fail a name read with error 0.
+        // Keep them as unnamed entries so they still block sole-mouse suppression.
+        if (chars == 1)
+            return null;
         var buffer = Marshal.AllocHGlobal(checked((int)(chars + 1) * 2));
         try
         {
-            Check(Native.GetRawInputDeviceInfo(handle, Native.DeviceName, buffer, ref chars), "Read device name");
-            return Marshal.PtrToStringUni(buffer)
-                ?? throw new InvalidOperationException("Input device returned no name.");
+            Check(readInfo(handle, Native.DeviceName, buffer, ref chars), "Read device name");
+            var name = Marshal.PtrToStringUni(buffer);
+            if (string.IsNullOrEmpty(name))
+                throw new InvalidOperationException("Input device returned no name after reporting a nonempty name size.");
+            return name;
         }
         finally
         {
@@ -113,7 +124,10 @@ internal static class DeviceSurvey
     internal static void Check(uint result, string operation)
     {
         if (result == uint.MaxValue)
-            throw new Win32Exception(Marshal.GetLastWin32Error(), operation);
+        {
+            var code = Marshal.GetLastWin32Error();
+            throw new Win32Exception(code, $"{operation} (Windows error {code}: {new Win32Exception(code).Message})");
+        }
     }
 
     private static void CheckHid(int status, string operation)

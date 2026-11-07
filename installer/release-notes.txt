@@ -1,4 +1,11 @@
-Expert Mouse Pro 2026 - first experimental Windows 11 x64 release
+Expert Mouse Pro 2026 0.1.1 - experimental Windows 11 x64 release
+
+Fixes:
+- Prevent repeated "Read device name" failures for unnamed Windows input devices.
+- Keep unnamed mice counted for safety and explain the main-button/wheel pause
+  in the status display; DirectLaunch assignments remain available.
+- Include Windows error codes and descriptions when device queries really fail.
+- Add regression checks for unnamed devices and device-query failures.
 
 Download the Setup EXE below and double-click it to install.
 The .NET Desktop runtime is included.

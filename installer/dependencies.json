@@ -1,5 +1,5 @@
 {
-  "releaseVersion": "0.1.0",
+  "releaseVersion": "0.1.1",
   "dotnetRuntimeVersion": "10.0.13",
   "innoSetup": {
     "version": "6.7.3",

@@ -135,6 +135,10 @@ untouched. Other applications, such as Wireshark, may depend on USBPcap.
   mouse reported by Raw Input. Connecting another mouse/touchpad, or using
   Remote Desktop, makes those controls pass through. DirectLaunch assignments
   can still work.
+- Windows can also list unnamed virtual pointers. These no longer trigger
+  repeated "Read device name" errors, but still count as additional pointers
+  for safety. The status identifies this condition; DirectLaunch assignments
+  remain available while main buttons/wheel pass through.
 - Main-button actions pass through over the taskbar/tray and this app's own
   interface, keeping settings accessible.
 - Release all controls and move the ball once if synchronization is pending.

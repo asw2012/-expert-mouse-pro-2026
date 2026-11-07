@@ -17,6 +17,7 @@ internal sealed class RemapperController : IAsyncDisposable
     private bool paused;
     private bool conflict;
     private bool soleMouse;
+    private bool unnamedMouse;
     private bool retrying;
     private bool disposed;
     private DateTimeOffset nextHealth;
@@ -125,8 +126,10 @@ internal sealed class RemapperController : IAsyncDisposable
             if (now >= nextHealth)
             {
                 conflict = IsXMouseRunning();
+                var mousePaths = DeviceSurvey.MousePaths();
+                unnamedMouse = mousePaths.Any(path => path is null);
                 soleMouse = !SystemInformation.TerminalServerSession &&
-                    DeviceSurvey.IsSoleExpertMouse(DeviceSurvey.MousePaths());
+                    DeviceSurvey.IsSoleExpertMouse(mousePaths);
                 if (session is not null && !failed)
                     session.CheckHealth();
                 if (!active)
@@ -162,6 +165,7 @@ internal sealed class RemapperController : IAsyncDisposable
                 : editing ? "Editing mappings - paused until you hide this window to the tray."
                 : paused ? "Paused - normal mouse actions pass through."
                 : !tracker.Synced ? "Release all buttons and move the ball once to synchronize."
+                : !soleMouse && unnamedMouse ? "DirectLaunch active; main buttons/wheel paused because Windows lists an unnamed pointer."
                 : !soleMouse ? "DirectLaunch active; main buttons/wheel paused because another pointer is present."
                 : "Active - all configured mappings enabled.";
             if (failed && now >= nextRetry)

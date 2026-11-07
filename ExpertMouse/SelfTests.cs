@@ -36,11 +36,79 @@ internal static class SelfTests
         Reject(() => RawPacket.Decode(2,
             new byte[] { 255, 255, 255, 255, 255, 255, 255, 255 }), "HID size multiplication overflow");
         Reject(() => RawPacket.Decode(1, mouse), "unexpected keyboard data");
+        var deviceChecks = RunDeviceNameChecks();
         var usbChecks = RunUsbChecks();
         var remapperChecks = RemapperTests.Run();
         var themeChecks = ThemeTests.Run();
-        Console.WriteLine($"PASS: {17 + usbChecks + remapperChecks + themeChecks} tests " +
-            $"({usbChecks} USB capture checks, {remapperChecks} remapper checks, {themeChecks} theme checks).");
+        Console.WriteLine($"PASS: {17 + deviceChecks + usbChecks + remapperChecks + themeChecks} tests " +
+            $"({deviceChecks} device name checks, {usbChecks} USB capture checks, " +
+            $"{remapperChecks} remapper checks, {themeChecks} theme checks).");
+    }
+
+    private static int RunDeviceNameChecks()
+    {
+        var checks = 0;
+        void Check(bool condition, string name)
+        {
+            Expect(condition, name);
+            checks++;
+        }
+        const string path = @"\\?\HID#VID_047D&PID_1002#test";
+        uint nameSize = 1;
+        var reads = 0;
+        var sizeError = false;
+        var readError = false;
+        var emptyName = false;
+        uint ReadInfo(nint device, uint command, nint data, ref uint size)
+        {
+            Expect(device == 123 && command == Native.DeviceName, "device name query arguments");
+            if (data == 0)
+            {
+                size = nameSize;
+                Marshal.SetLastPInvokeError(5);
+                return sizeError ? uint.MaxValue : 0;
+            }
+            reads++;
+            if (readError)
+            {
+                Marshal.SetLastPInvokeError(6);
+                return uint.MaxValue;
+            }
+            Expect(size == path.Length + 1, "device name capacity is in characters");
+            Marshal.Copy(((emptyName ? "" : path) + '\0').ToCharArray(), 0, data,
+                emptyName ? 1 : path.Length + 1);
+            return size;
+        }
+        Check(DeviceSurvey.GetName(123, ReadInfo) is null && reads == 0,
+            "terminator-only device name is unnamed without a failing second query");
+        Check(!DeviceSurvey.IsTarget(null), "unnamed device is not a target");
+        Check(!DeviceSurvey.IsSoleExpertMouse([null]), "unnamed mouse alone cannot enable suppression");
+        Check(!DeviceSurvey.IsSoleExpertMouse([path, null]), "unnamed second mouse still blocks suppression");
+        nameSize = (uint)path.Length + 1;
+        Check(DeviceSurvey.GetName(123, ReadInfo) == path && reads == 1,
+            "named device path is read intact");
+        emptyName = true;
+        Reject(() => DeviceSurvey.GetName(123, ReadInfo), "unexpected empty device name");
+        checks++;
+        emptyName = false;
+        nameSize = 0;
+        Reject(() => DeviceSurvey.GetName(123, ReadInfo), "zero device name capacity");
+        checks++;
+        foreach (var failSizing in new[] { true, false })
+        {
+            nameSize = (uint)path.Length + 1;
+            sizeError = failSizing;
+            readError = !failSizing;
+            var surfaced = false;
+            try { DeviceSurvey.GetName(123, ReadInfo); }
+            catch (System.ComponentModel.Win32Exception ex)
+            {
+                var expected = failSizing ? 5 : 6;
+                surfaced = ex.NativeErrorCode == expected && ex.Message.Contains($"Windows error {expected}");
+            }
+            Check(surfaced, "real device name errors retain the Windows error code");
+        }
+        return checks;
     }
 
     private static int RunUsbChecks()
